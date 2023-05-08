@@ -23,7 +23,7 @@ pipeline {
                 script {
                         sh "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
                         sh "helm repo update"
-                        sh "helm install ingress-nginx ingress-nginx/ingress-nginx"
+                        sh "helm install ingress-nginx ingress-nginx/ingress-nginx $KUBECONFIG"
                         sh "sleep 15"
                 }
             }
