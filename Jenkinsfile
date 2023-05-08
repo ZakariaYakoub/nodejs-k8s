@@ -50,7 +50,7 @@ pipeline {
                 script {
                     
                     sh "kubectl apply -f deploy-nodejs.yaml $KUBECONFIG"
-                    sh "evesubt < ingress-app.yaml | kubectl apply -f "
+                    sh "envsubst  < ingress-app.yaml | kubectl apply -f "
                 }
             }
         }
