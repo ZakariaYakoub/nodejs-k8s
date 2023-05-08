@@ -22,7 +22,7 @@ pipeline {
             steps {
                 script {
                     // check if ingress-nginx is already installed
-                    def helmList = sh(script: "helm list -n default -f ingress-nginx -q", returnStdout: true).trim()
+                    def helmList = sh(script: "helm list -n default -f ingress-nginx -q $KUBECONFIG", returnStdout: true).trim()
                     if (helmList) {
                         echo "Ingress-nginx is already installed."
                     } else {
