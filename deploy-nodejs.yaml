@@ -14,12 +14,9 @@ spec:
       labels:
         app: my-app
     spec:
-      imagePullSecrets:
-      - name: my-secret
       containers:
       - name: my-app
         image: zikou/portfolio:1.0
-        imagePullPolicy: Always
         ports:
           - containerPort: 3000
 ---

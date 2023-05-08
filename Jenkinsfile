@@ -21,13 +21,10 @@ pipeline {
             }
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'docker-crd', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                        sh "kubectl create docker-registry my-secret --docker-server=https://index.docker.io/v1/ --docker-username=$USER --docker-password=$PASS"
                         sh "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
                         sh "helm repo update"
                         sh "helm install ingress-nginx ingress-nginx/ingress-nginx"
                         sh "sleep 15"
-                    }
                 }
             }
         }
