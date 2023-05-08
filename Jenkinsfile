@@ -11,6 +11,7 @@ pipeline {
                     sh 'terraform init'
                     sh "terraform apply --auto-approve"
                     sh "terraform output kubeconfig | jq -r '@base64d' > ../lke.yaml"
+                    sh "chmod 600 lke.yaml"
                 }
             }
         }
