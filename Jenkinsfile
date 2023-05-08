@@ -21,10 +21,16 @@ pipeline {
             }
             steps {
                 script {
+                    // check if ingress-nginx is already installed
+                    def helmList = sh(script: "helm list -n default -f ingress-nginx -q", returnStdout: true).trim()
+                    if (helmList) {
+                        echo "Ingress-nginx is already installed."
+                    } else {
                         sh "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
                         sh "helm repo update"
                         sh "helm install ingress-nginx ingress-nginx/ingress-nginx $KUBECONFIG"
                         sh "sleep 15"
+                    }
                 }
             }
         }
