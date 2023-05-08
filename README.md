@@ -15,7 +15,7 @@ This stage retrieves the hostname of the nodebalancer created by the LKE cluster
 This stage deploys a sample Node.js application to the LKE cluster using deploy-nodejs.yaml. It also creates an ingress rule for the application using ingress-app.yaml and substitutes the HOSTNAME environment variable in the file.
 
 ## Files
-Jenkinsfile: Pipeline script for Jenkins
-terraform: Folder containing Terraform configuration to provision the LKE cluster
-deploy-nodejs.yaml: Kubernetes configuration file to deploy the sample Node.js application
-ingress-app.yaml: Kubernetes configuration file to create an ingress rule for the sample application
+Jenkinsfile: Pipeline script for Jenkins <br>
+terraform: Folder containing Terraform configuration to provision the LKE cluster <br>
+deploy-nodejs.yaml: Kubernetes configuration file to deploy the sample Node.js application <br>
+ingress-app.yaml: Kubernetes configuration file to create an ingress rule for the sample application <br>
