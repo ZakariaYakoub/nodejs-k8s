@@ -1,31 +1,30 @@
 pipeline {
     agent any
     environment {
-        LINODE_TOKEN = credentials('api_token')
+        LINODE_TOKEN = credentials('linode_token')
     }
 
     stages {
-        stage('Provision LKE cluster') {
+        stage('Provision Linode cluster (LKE)') {
             steps {
                 dir('terraform') {
                     sh 'terraform init'
                     sh "terraform apply --auto-approve"
-                    sh "terraform output kubeconfig | jq -r '@base64d' > ../lke.yaml"
-                    sh "chmod 600 ../lke.yaml"
+                    sh "terraform output kubeconfig | jq -r '@base64d' > ../mycluster.yaml"
+                    sh "chmod 600 ../mycluster.yaml"
                 }
             }
         }
 
         stage("install ingress in the cluster") {
             environment {
-                KUBECONFIG = "--kubeconfig='lke.yaml'"
+                KUBECONFIG = "--kubeconfig='mycluster.yaml'"
             }
             steps {
                 script {
-                    // check if ingress-nginx is already installed
-                    def helmList = sh(script: "helm list -n default -f ingress-nginx -q $KUBECONFIG", returnStdout: true).trim()
-                    if (helmList) {
-                        echo "Ingress-nginx is already installed."
+                    def chartlist = sh(script: "helm list -n default -f ingress-nginx -q $KUBECONFIG", returnStdout: true).trim()
+                    if (chartlist) {
+                        echo "The Ingress-nginx chart is already installed."
                     } else {
                         sh "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
                         sh "helm repo update"
@@ -38,7 +37,7 @@ pipeline {
 
         stage("retrieve the nodebalancer hostname") {
             environment {
-                KUBECONFIG = "--kubeconfig='lke.yaml'"
+                KUBECONFIG = "--kubeconfig='mycluster.yaml'"
             }
             steps {
                 script {
@@ -51,7 +50,7 @@ pipeline {
 
         stage('Deploy application') {
             environment {
-                KUBECONFIG = "--kubeconfig='lke.yaml'"
+                KUBECONFIG = "--kubeconfig='mycluster.yaml'"
             }
             steps {
                 script {
