@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        LINODE_TOKEN = credentials('linode_api')
+        LINODE_TOKEN = credentials('linode_token')
     }
 
     stages {
